@@ -14,28 +14,31 @@
  |  See the License for the specific language governing permissions and
  |  limitations under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.adobe.aem.guides</groupId>
     <artifactId>aem-guides-wknd</artifactId>
     <packaging>pom</packaging>
     <version>3.2.1-SNAPSHOT</version>
-     <name>WKND Sites Project - Reactor Project</name>
+    <name>WKND Sites Project - Reactor Project</name>
     <description>WKND Sites Project</description>
     <url>https://github.com/adobe/aem-guides-wknd</url>
     <inceptionYear>2019</inceptionYear>
 
     <licenses>
-		<license>
-			<name>MIT License</name>
-			<url>http://www.opensource.org/licenses/mit-license.php</url>
-		</license>
-	</licenses>
+        <license>
+            <name>MIT License</name>
+            <url>http://www.opensource.org/licenses/mit-license.php</url>
+        </license>
+    </licenses>
 
     <modules>
         <module>all</module>
         <module>core</module>
         <module>ui.frontend</module>
+        <module>ui.frontend.theme.light</module>
         <module>ui.apps</module>
         <module>ui.apps.structure</module>
         <module>ui.config</module>
@@ -55,7 +58,7 @@
         <sling.password>admin</sling.password>
         <vault.user>admin</vault.user>
         <vault.password>admin</vault.password>
-        <frontend-maven-plugin.version>1.12.0</frontend-maven-plugin.version>
+        <frontend-maven-plugin.version>1.15.0</frontend-maven-plugin.version>
         <bnd.version>5.1.2</bnd.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -73,7 +76,7 @@
         <url>http://www.adobe.com/</url>
     </organization>
 
-     <developers>
+    <developers>
         <developer>
             <id>aem-guides-wknd</id>
             <organization>Adobe</organization>
@@ -82,7 +85,7 @@
         </developer>
     </developers>
 
-     <scm>
+    <scm>
         <connection>scm:git:https://github.com/adobe/aem-guides-wknd.git</connection>
         <developerConnection>scm:git:https://github.com/adobe/aem-guides-wknd.git</developerConnection>
         <url>https://github.com/adobe/aem-guides-wknd/tree/main</url>
@@ -128,10 +131,10 @@
                 </configuration>
                 <executions>
                     <execution>
-                    <id>attach-javadocs</id>
-                    <goals>
-                        <goal>jar</goal>
-                    </goals>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
@@ -164,8 +167,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>11</source>
+                    <target>11</target>
                 </configuration>
             </plugin>
         </plugins>
@@ -176,8 +179,8 @@
                     <artifactId>frontend-maven-plugin</artifactId>
                     <version>${frontend-maven-plugin.version}</version>
                     <configuration>
-                        <nodeVersion>v16.17.0</nodeVersion>
-                        <npmVersion>8.15.0</npmVersion>
+                        <nodeVersion>v21.6.2</nodeVersion>
+                        <npmVersion>10.2.4</npmVersion>
                     </configuration>
                     <executions>
                         <execution>
@@ -330,13 +333,20 @@ Bundle-DocURL:
                         <validatorsSettings>
                             <jackrabbit-nodetypes>
                                 <options>
-                                    <!-- use the nodetypes and namespaces from the aem-nodetypes.jar provided in the plugin dependencies -->
+                                    <!-- use the nodetypes and namespaces from the aem-nodetypes.jar
+                                    provided in the plugin dependencies -->
                                     <cnds>tccl:aem.cnd</cnds>
                                 </options>
                             </jackrabbit-nodetypes>
                             <netcentric-aem-replication-metadata>
                                 <options>
                                     <agentNames>publish,preview</agentNames><!-- default value is publish only  -->
+                                    <includedNodePathPatternsAndTypes>
+                                        .*/wknd/settings/wcm/templates/[^/]*/structure[cq:Page],
+                                        .*/wknd/settings/wcm/templates/[^/]*/policies[cq:Page],
+                                        .*/wknd/settings/wcm/policies/.*[wcm/core/components/policy/policy],
+                                        /(apps|conf)/wknd/.*/(sling:configs|settings/cloudconfigs)/.*[cq:Page]
+                                    </includedNodePathPatternsAndTypes>
                                 </options>
                              </netcentric-aem-replication-metadata>
                         </validatorsSettings>
@@ -391,7 +401,8 @@ Bundle-DocURL:
                     <artifactId>build-helper-maven-plugin</artifactId>
                     <version>3.0.0</version>
                 </plugin>
-                <!--This plugin's configuration is used to store Eclipse
+                <!--This
+                plugin's configuration is used to store Eclipse
                     m2e settings only. It has no influence on the Maven build itself. -->
                 <plugin>
                     <groupId>org.eclipse.m2e</groupId>
@@ -576,7 +587,8 @@ Bundle-DocURL:
                                         <goal>install</goal>
                                     </goals>
                                     <configuration>
-                                        <targetURL>http://${aem.host}:${aem.port}/crx/packmgr/service.jsp</targetURL>
+                                        <targetURL>
+                                            http://${aem.host}:${aem.port}/crx/packmgr/service.jsp</targetURL>
                                     </configuration>
                                 </execution>
                             </executions>
@@ -616,7 +628,8 @@ Bundle-DocURL:
                                         <goal>install</goal>
                                     </goals>
                                     <configuration>
-                                        <targetURL>http://${aem.publish.host}:${aem.publish.port}/crx/packmgr/service.jsp</targetURL>
+                                        <targetURL>
+                                            http://${aem.publish.host}:${aem.publish.port}/crx/packmgr/service.jsp</targetURL>
                                     </configuration>
                                 </execution>
                             </executions>
@@ -687,7 +700,8 @@ Bundle-DocURL:
                         <configuration>
                             <serverId>ossrh</serverId>
                             <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                            <!-- manually release in https://oss.sonatype.org/#stagingRepositories after the Maven release build -->
+                            <!-- manually release in https://oss.sonatype.org/#stagingRepositories
+                            after the Maven release build -->
                             <autoReleaseAfterClose>false</autoReleaseAfterClose>
                         </configuration>
                     </plugin>
@@ -697,9 +711,9 @@ Bundle-DocURL:
         <profile>
             <id>cm-java-11</id>
             <activation>
-                  <property>
-                        <name>env.CM_BUILD</name>
-                  </property>
+                <property>
+                    <name>env.CM_BUILD</name>
+                </property>
             </activation>
             <build>
                 <plugins>
@@ -736,7 +750,7 @@ Bundle-DocURL:
     <dependencyManagement>
         <dependencies>
 
-        <!-- AEM as a Cloud Service SDK -->
+            <!-- AEM as a Cloud Service SDK -->
             <dependency>
                 <groupId>com.adobe.aem</groupId>
                 <artifactId>aem-sdk-api</artifactId>
@@ -744,7 +758,7 @@ Bundle-DocURL:
                 <scope>provided</scope>
             </dependency>
 
-             <!-- AEM Core Components -->
+            <!-- AEM Core Components -->
             <dependency>
                 <groupId>com.adobe.cq</groupId>
                 <artifactId>core.wcm.components.core</artifactId>
@@ -826,6 +840,28 @@ Bundle-DocURL:
                 <artifactId>slf4j-test</artifactId>
                 <version>1.0.1</version>
                 <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.adobe.aem.commons</groupId>
+                <artifactId>assetshare.all</artifactId>
+                <version>3.8.0</version>
+                <classifier>cloud</classifier>
+                <type>zip</type>
+            </dependency>
+
+            <!-- Optional dependency to code against Asset Share Commons APIs -->
+            <dependency>
+                <groupId>com.adobe.aem.commons</groupId>
+                <artifactId>assetshare.core</artifactId>
+                <version>3.8.0</version>
+                <type>jar</type>
+            </dependency>
+            <dependency>
+                <groupId>com.adobe.aem.commons</groupId>
+                <artifactId>assetshare.core.cloud</artifactId>
+                <version>3.8.0</version>
+                <type>jar</type>
             </dependency>
         </dependencies>
     </dependencyManagement>

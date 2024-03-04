@@ -257,7 +257,14 @@
                                     <artifactId>aem-guides-wknd-shared.ui.content</artifactId>
                                     <type>zip</type>
                                     <target>/apps/wknd-vendor-packages/content/install</target>
-                                </embedded>                           
+                                </embedded>        
+                                <embedded>
+                                    <groupId>com.adobe.aem.commons</groupId>
+                                    <artifactId>assetshare.all</artifactId>
+                                    <classifier>cloud</classifier> <!-- MUST ADD FOR AEM AS A CLOUD SERVICE  -->
+                                    <type>zip</type>
+                                    <target>/apps/wknd-packages/container/install</target>
+                                </embedded>      
                             </embeddeds>
                         </configuration>
                     </plugin>
@@ -323,6 +330,12 @@
             <groupId>com.adobe.aem.guides</groupId>
             <artifactId>aem-guides-wknd-shared.ui.content</artifactId>
             <type>zip</type>
-        </dependency>        
+        </dependency>  
+        <dependency>
+            <groupId>com.adobe.aem.commons</groupId>
+            <artifactId>assetshare.all</artifactId>
+            <classifier>cloud</classifier> <!-- MUST ADD FOR AEM AS A CLOUD SERVICE  -->
+            <type>zip</type>
+        </dependency>      
     </dependencies>
 </project>
